@@ -20,43 +20,42 @@ function TaskPage() {
         typography : {
             fontFamily: 'Verdana, sans-serif',
             fontWeight: 500,
-            fontSize: '1.2rem',
             color: '#5c6bc0',
             letterSpacing: '0.5px',
         },
         checkIcon : {
             background: 'white',
-            border: 'solid 2px green',
+            border: 'solid 2px #50C878',
             size: 'small',
             padding: '0',
             marginX: '2px',
-            color: 'green',
+            color: '#50C878',
             '&:hover': {
-                background: 'green',
+                background: '#50C878',
                 color: 'white',
             },
         },
         deleteIcon : {
             background: 'white',
-            border: 'solid 2px crimson',
+            border: 'solid 2px #fd5c63',
             size: 'small',
             padding: '0',
             marginX: '2px',
-            color: 'crimson',
+            color: '#fd5c63',
             '&:hover': {
-                background: 'crimson',
+                background: '#fd5c63',
                 color: 'white',
             },
         },
         editNoteIcon : {
             background: 'white',
-            border: 'solid 2px purple',
+            border: 'solid 2px Plum',
             size: 'small',
             padding: '0',
             marginX: '2px',
-            color: 'purple',
+            color: 'Plum',
             '&:hover': {
-                background: 'purple',
+                background: 'Plum',
                 color: 'white',
             },
         }
@@ -67,29 +66,7 @@ function TaskPage() {
             <CardContent>
                 <Grid container spacing={2}>
                     <Grid size={8}>
-                        <Typography sx={styles.typography}>
-                            Fisrt Task
-                        </Typography>
-                    </Grid>
-                    <Grid size={4} display="flex" justifyContent="space-around" alignItems="center">
-                        <IconButton sx={styles.checkIcon}>
-                            <CheckIcon />   
-                        </IconButton>
-                        <IconButton sx={styles.deleteIcon}>
-                            <DeleteIcon/>
-                        </IconButton>
-                        <IconButton sx={styles.editNoteIcon}>
-                            <EditNoteIcon/> 
-                        </IconButton>
-                    </Grid>
-                </Grid>
-            </CardContent>
-        </Card>
-        <Card sx={styles.card}>
-            <CardContent>
-                <Grid container spacing={2}>
-                    <Grid size={8}>
-                        <Typography sx={styles.typography}>
+                        <Typography variant='body1' sx={styles.typography}>
                             Fisrt Task
                         </Typography>
                     </Grid>

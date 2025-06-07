@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Container, Typography, ButtonGroup, Button, colors } from '@mui/material';
+import { Box, Container, Typography, Button, TextField, Grid, colors } from '@mui/material';
 import TaskPage from './TaskPage';
 
 function TodoPage() {
@@ -31,6 +31,27 @@ function TodoPage() {
                 backgroundColor: '#7986cb',
                 color: 'white',
             },
+        },
+        textFieldGrid : {
+            width: '90%',
+            display: 'flex',
+            marginTop: '20px'
+        },
+        textFieldBtn: {
+            width: '140px',
+            height: '100%',
+            fontSize: '0.9rem',
+            backgroundColor: '#7986cb',
+            color: 'white',
+            border: 'solid 1px #283593',
+            borderRadius: 0,
+            '&:hover': {
+                backgroundColor: '#3f51b5',
+                color: 'white',
+            },
+        },
+        textField: {
+            height: '50%',
         }
     }
 
@@ -56,6 +77,14 @@ function TodoPage() {
                 <Box sx={{width: '90%'}}>
                     <TaskPage/>
                 </Box>
+                <Grid container spacing={0} sx={styles.textFieldGrid}>
+                    <Grid item size={8} sx={{ marginRight:'-20px'}}> 
+                       <TextField label="Add New Task" variant="outlined" sx={styles.textField}/>
+                    </Grid>
+                    <Grid item size={4} >
+                        <Button sx={styles.textFieldBtn} variant='text'>Add Task</Button>
+                    </Grid>
+                </Grid>
             </Box>
         </Container>
     </div>
