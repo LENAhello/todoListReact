@@ -32,6 +32,7 @@ function TaskPage({task, handleCheck, todoList, setTodoList}) {
         });
 
         setTodoList(updatedList);
+        localStorage.setItem('todoList', JSON.stringify(updatedList));
     }; 
     const handelUpdateTask = () => {
         const updatedList = todoList.map((t) => {
@@ -42,6 +43,7 @@ function TaskPage({task, handleCheck, todoList, setTodoList}) {
             }
         });
         setTodoList(updatedList);
+        localStorage.setItem('todoList', JSON.stringify(updatedList));
         setShowUpdateDialog(false);
     }; 
 
@@ -80,12 +82,12 @@ function TaskPage({task, handleCheck, todoList, setTodoList}) {
             },
         },
         checkIcon : {
-            background: 'white',
+            background: task.isCompleted ? '#50C878' :'white',
             border: 'solid 2px #50C878',
             size: 'small',
             padding: '0',
             marginX: '2px',
-            color: '#50C878',
+            color: task.isCompleted ? 'white' : '#50C878',
             '&:hover': {
                 background: '#50C878',
                 color: 'white',
@@ -116,6 +118,7 @@ function TaskPage({task, handleCheck, todoList, setTodoList}) {
             },
         }
     };
+
   return (
     <>
         {/* DELETE ALERT DIALOG */}
@@ -172,6 +175,7 @@ function TaskPage({task, handleCheck, todoList, setTodoList}) {
             <Button sx={styles.updateDialogBtn} onClick={handelUpdateTask} autoFocus>Update</Button>
             </DialogActions>
         </Dialog>
+        {/* CARD CONTAINER */}
         <Card sx={styles.card}>
             <CardContent>
                 <Grid container spacing={2}>
@@ -180,6 +184,7 @@ function TaskPage({task, handleCheck, todoList, setTodoList}) {
                             {task.title}
                         </Typography>
                     </Grid>
+                    {/* ICON BUTTONS GROUP */}
                     <Grid size={4} display="flex" justifyContent="space-around" alignItems="center">
                         <IconButton sx={styles.checkIcon}>
                             <CheckIcon onClick={() => handleCheck(task.id)}/>   

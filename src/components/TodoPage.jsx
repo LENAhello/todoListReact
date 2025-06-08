@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Container, Typography, Button, TextField, Grid, colors } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import TaskPage from './TaskPage';
@@ -26,17 +26,30 @@ function TodoPage() {
     const [todoList, setTodoList] = useState(todoListOne);
     const [titleInput, setTitleInput] = useState('');
 
-    const handelInputClick = () => {
+    // USE EFFECT TO SAVE TO DO LIST IN LOCAL STORAGE 
+    useEffect( () => {
+        const storageList = JSON.parse(localStorage.getItem('todoList'));
+        if (storageList) {
+            setTodoList(storageList);
+        };
+
+    }, []);
+
+    // ADD NEW TASK WITH TEXTFIELD MUI COMPONENT
+    const handleInputClick = () => {
         const newTask = {
             id: uuidv4(),
             title: titleInput,
             isCompleted: false
         };
 
-        setTodoList([...todoListOne, newTask]);
+        const updatedList = [...todoList, newTask];
+        setTodoList(updatedList);
+        localStorage.setItem('todoList', JSON.stringify(updatedList));
         setTitleInput('');
     };
 
+    // HANDLE CHECKICON IN TASKPAGE COMPONENT
     const handleCheck= (taskId) => {
         const updatedList = todoList.map( (t) => {
             if (t.id == taskId) {
@@ -45,7 +58,9 @@ function TodoPage() {
             return t;
         })
         setTodoList(updatedList);
-    }
+        localStorage.setItem('todoList', JSON.stringify(updatedList));
+    };
+
     const styles = {
         box : {
             bgcolor: 'white', 
@@ -77,6 +92,7 @@ function TodoPage() {
         textFieldGrid : {
             width: '90%',
             display: 'flex',
+            alignItems: 'stretch',
             marginY: '20px'
         },
         textFieldBtn: {
@@ -129,7 +145,7 @@ function TodoPage() {
                 ))}
                 </Box>
                 <Grid container spacing={0} sx={styles.textFieldGrid}>
-                    <Grid item size={8} sx={{ marginRight:'-20px'}}> 
+                    <Grid item xs={8} sx={{ marginRight:'-20px'}}> 
                        <TextField 
                             label="Add New Task" 
                             variant="outlined" 
@@ -139,8 +155,8 @@ function TodoPage() {
                             onChange={(e) => setTitleInput(e.target.value)}
                             />
                     </Grid>
-                    <Grid item size={4} >
-                        <Button sx={styles.textFieldBtn} variant='text' onClick={() => handelInputClick()}>Add Task</Button>
+                    <Grid item xs={4} >
+                        <Button sx={styles.textFieldBtn} variant='text' onClick={() => handleInputClick()}>Add Task</Button>
                     </Grid>
                 </Grid>
             </Box>
