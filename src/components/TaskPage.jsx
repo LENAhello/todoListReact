@@ -3,14 +3,16 @@ import {
     Button, 
     Card, 
     CardContent, 
+    colors,
     Dialog, 
     DialogTitle, 
     DialogContent, 
     DialogContentText, 
     DialogActions, 
     Grid, 
-    IconButton, 
-    Typography 
+    IconButton,
+    TextField, 
+    Typography
 } from '@mui/material';
 
 // ICONS
@@ -21,6 +23,8 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 function TaskPage({task, handleCheck, todoList, setTodoList}) {
 
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [showUpdateDialog, setShowUpdateDialog] = useState(false);
+    const [updatedTask, setUpdatedTask] = useState(task.title);
 
     const handelDeleteTask = () => {
         const updatedList = todoList.filter((t) =>{
@@ -29,6 +33,18 @@ function TaskPage({task, handleCheck, todoList, setTodoList}) {
 
         setTodoList(updatedList);
     }; 
+    const handelUpdateTask = () => {
+        const updatedList = todoList.map((t) => {
+            if(t.id == task.id) {
+                return {...t, title: updatedTask};
+            }else{
+                return t;
+            }
+        });
+        setTodoList(updatedList);
+        setShowUpdateDialog(false);
+    }; 
+
     const styles = {
         card : {
             background: task.isCompleted ? '#B5E6C7' : '#e8eaf6',
@@ -43,6 +59,25 @@ function TaskPage({task, handleCheck, todoList, setTodoList}) {
             fontWeight: 500,
             color: task.isCompleted ? '#379958' : '#5c6bc0',
             letterSpacing: '0.5px',
+        },
+        deleteDialog : {
+            background: colors.red[50],
+        },
+        deleteDialogBtn : {
+            color: 'red',
+            '&:hover' : {
+                background: colors.red[50],
+            },
+        },
+        updateDialog : {
+            width: '60%',
+            background: colors.purple[50],
+        },
+        updateDialogBtn : {
+            color: 'purple',
+            '&:hover' : {
+                background: colors.purple[50],
+            },
         },
         checkIcon : {
             background: 'white',
@@ -80,14 +115,16 @@ function TaskPage({task, handleCheck, todoList, setTodoList}) {
                 color: 'white',
             },
         }
-    }
+    };
   return (
     <>
+        {/* DELETE ALERT DIALOG */}
         <Dialog
             open={showDeleteDialog}
             onClose={() => setShowDeleteDialog(false)}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
+            PaperProps={{ sx: styles.deleteDialog }}
         >
             <DialogTitle id="alert-dialog-title">
             Deleting Task "{task.title}"
@@ -99,9 +136,40 @@ function TaskPage({task, handleCheck, todoList, setTodoList}) {
             </DialogContent>
             <DialogActions>
             <Button onClick={() => setShowDeleteDialog(false)}>Close</Button>
-            <Button onClick={handelDeleteTask} autoFocus>
+            <Button sx={styles.deleteDialogBtn} onClick={handelDeleteTask} autoFocus>
                 Delete
             </Button>
+            </DialogActions>
+        </Dialog>
+        {/* UPDATE FORM DIALOG */}
+        <Dialog
+            open={showUpdateDialog}
+            onClose={() => setShowUpdateDialog(false)}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            PaperProps={{ sx: styles.updateDialog}}
+        >
+            <DialogTitle id="alert-dialog-title">
+            Updating Task
+            </DialogTitle>
+            <DialogContent>
+            <TextField
+                autoFocus
+                required
+                margin="dense"
+                id="name"
+                name="task"
+                label="task"
+                type="task"
+                fullWidth
+                variant="standard"
+                value={updatedTask}
+                onChange={ (e) => setUpdatedTask(e.target.value)}
+            />
+            </DialogContent>
+            <DialogActions>
+            <Button onClick={() => setShowUpdateDialog(false)}>Close</Button>
+            <Button sx={styles.updateDialogBtn} onClick={handelUpdateTask} autoFocus>Update</Button>
             </DialogActions>
         </Dialog>
         <Card sx={styles.card}>
@@ -119,7 +187,7 @@ function TaskPage({task, handleCheck, todoList, setTodoList}) {
                         <IconButton sx={styles.deleteIcon} onClick={() => setShowDeleteDialog(true)}>
                             <DeleteIcon/>
                         </IconButton>
-                        <IconButton sx={styles.editNoteIcon}>
+                        <IconButton sx={styles.editNoteIcon} onClick={() => setShowUpdateDialog(true)}>
                             <EditNoteIcon/> 
                         </IconButton>
                     </Grid>
