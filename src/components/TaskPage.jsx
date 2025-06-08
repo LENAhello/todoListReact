@@ -6,21 +6,21 @@ import CheckIcon from '@mui/icons-material/Check';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 
-function TaskPage() {
+function TaskPage({task, handleCheck}) {
 
     const styles = {
         card : {
-            background: '#e8eaf6',
+            background: task.isCompleted ? '#B5E6C7' : '#e8eaf6',
             marginY: '5px',
             color: 'white',
             fontWeight: 'bold',
-            border: 'solid 2px #9fa8da',
+            border:  task.isCompleted ? 'solid 2px #379958' : 'solid 2px #9fa8da',
             borderRadius: '5px',
         },
         typography : {
             fontFamily: 'Verdana, sans-serif',
             fontWeight: 500,
-            color: '#5c6bc0',
+            color: task.isCompleted ? '#379958' : '#5c6bc0',
             letterSpacing: '0.5px',
         },
         checkIcon : {
@@ -37,13 +37,13 @@ function TaskPage() {
         },
         deleteIcon : {
             background: 'white',
-            border: 'solid 2px #fd5c63',
+            border: 'solid 2px #CD5C5C',
             size: 'small',
             padding: '0',
             marginX: '2px',
-            color: '#fd5c63',
+            color: '#CD5C5C',
             '&:hover': {
-                background: '#fd5c63',
+                background: '#CD5C5C',
                 color: 'white',
             },
         },
@@ -67,12 +67,12 @@ function TaskPage() {
                 <Grid container spacing={2}>
                     <Grid size={8}>
                         <Typography variant='body1' sx={styles.typography}>
-                            Fisrt Task
+                            {task.title}
                         </Typography>
                     </Grid>
                     <Grid size={4} display="flex" justifyContent="space-around" alignItems="center">
                         <IconButton sx={styles.checkIcon}>
-                            <CheckIcon />   
+                            <CheckIcon onClick={() => handleCheck(task.id)}/>   
                         </IconButton>
                         <IconButton sx={styles.deleteIcon}>
                             <DeleteIcon/>

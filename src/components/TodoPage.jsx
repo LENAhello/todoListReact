@@ -1,13 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Container, Typography, Button, TextField, Grid, colors } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
 import TaskPage from './TaskPage';
+
+const todoListOne = [
+    {
+        id: uuidv4(),
+        title: 'doing my yyy',
+        isCompleted: false,
+    },
+    {
+        id: uuidv4(),
+        title: 'doing my homework',
+        isCompleted: false,
+    },
+    {
+        id: uuidv4(),
+        title: 'doing my oo',
+        isCompleted: false,
+    },
+];
 
 function TodoPage() {
 
+    const [todoList, setTodoList] = useState(todoListOne);
+    const [titleInput, setTitleInput] = useState('');
+
+    const handelInputClick = () => {
+        const newTask = {
+            id: uuidv4(),
+            title: titleInput,
+            isCompleted: false
+        };
+
+        setTodoList([...todoListOne, newTask]);
+        setTitleInput('');
+    };
+
+    const handleCheck= (taskId) => {
+        const updatedList = todoList.map( (t) => {
+            if (t.id == taskId) {
+                t.isCompleted = !t.isCompleted;
+            }
+            return t;
+        })
+        setTodoList(updatedList);
+    }
     const styles = {
         box : {
             bgcolor: 'white', 
-            height: '60vh', 
+            height: '65vh', 
             width: '400px',
             display: 'flex',
             flexDirection: 'column',
@@ -35,7 +77,7 @@ function TodoPage() {
         textFieldGrid : {
             width: '90%',
             display: 'flex',
-            marginTop: '20px'
+            marginY: '20px'
         },
         textFieldBtn: {
             width: '140px',
@@ -53,7 +95,7 @@ function TodoPage() {
         textField: {
             height: '50%',
         }
-    }
+    };
 
   return (
     <div>
@@ -74,15 +116,25 @@ function TodoPage() {
                     <Button sx={styles.button} variant='text'>In progress</Button>
                     <Button sx={styles.button} variant='text'>Completed</Button>
                 </Box>
-                <Box sx={{width: '90%'}}>
-                    <TaskPage/>
+                <Box sx={{width: '90%',  overflowY: 'auto'}}>
+                {todoList.map((task) => (
+                    <TaskPage key={task.id} task={task} handleCheck={handleCheck}/>
+        
+                ))}
                 </Box>
                 <Grid container spacing={0} sx={styles.textFieldGrid}>
                     <Grid item size={8} sx={{ marginRight:'-20px'}}> 
-                       <TextField label="Add New Task" variant="outlined" sx={styles.textField}/>
+                       <TextField 
+                            label="Add New Task" 
+                            variant="outlined" 
+                            size="small" 
+                            sx={styles.textField}
+                            value={titleInput}
+                            onChange={(e) => setTitleInput(e.target.value)}
+                            />
                     </Grid>
                     <Grid item size={4} >
-                        <Button sx={styles.textFieldBtn} variant='text'>Add Task</Button>
+                        <Button sx={styles.textFieldBtn} variant='text' onClick={() => handelInputClick()}>Add Task</Button>
                     </Grid>
                 </Grid>
             </Box>
