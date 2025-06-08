@@ -118,7 +118,13 @@ function TodoPage() {
                 </Box>
                 <Box sx={{width: '90%',  overflowY: 'auto'}}>
                 {todoList.map((task) => (
-                    <TaskPage key={task.id} task={task} handleCheck={handleCheck}/>
+                    <TaskPage 
+                        key={task.id} 
+                        task={task} 
+                        handleCheck={handleCheck}
+                        todoList={todoList}
+                        setTodoList={setTodoList}
+                    />
         
                 ))}
                 </Box>
