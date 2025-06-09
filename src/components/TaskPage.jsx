@@ -59,7 +59,7 @@ function TaskPage({task, handleCheck, todoList, setTodoList}) {
         typography : {
             fontFamily: 'Verdana, sans-serif',
             fontWeight: 500,
-            color: task.isCompleted ? '#379958' : '#5c6bc0',
+            color: task.isCompleted ? '#006241' : '#5c6bc0',
             letterSpacing: '0.5px',
         },
         deleteDialog : {

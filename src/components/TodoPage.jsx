@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Typography, Button, TextField, Grid, colors } from '@mui/material';
+import { Box, Container, Typography, Button, TextField, Grid, colors, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import TaskPage from './TaskPage';
 
@@ -25,6 +25,7 @@ function TodoPage() {
 
     const [todoList, setTodoList] = useState(todoListOne);
     const [titleInput, setTitleInput] = useState('');
+    const [filteredValue, setFilteredValue] = useState('all');
 
     // USE EFFECT TO SAVE TO DO LIST IN LOCAL STORAGE 
     useEffect( () => {
@@ -35,6 +36,7 @@ function TodoPage() {
 
     }, []);
 
+    let tasksToBeRendered = todoList;
     // ADD NEW TASK WITH TEXTFIELD MUI COMPONENT
     const handleInputClick = () => {
         const newTask = {
@@ -61,6 +63,28 @@ function TodoPage() {
         localStorage.setItem('todoList', JSON.stringify(updatedList));
     };
 
+    // FILTERING COMPLETED TASKS
+    const completedList = todoList.filter((t) => {
+        return t.isCompleted;
+    });
+
+    // FILTERING NON COMPLETED TASKS
+    const nonCompletedList = todoList.filter((t) => {
+        return !t.isCompleted;
+    });
+
+    // FILTERING TASKS
+    if(filteredValue == 'inProgress'){
+        tasksToBeRendered = nonCompletedList;
+    }else if (filteredValue == 'completed') {
+        tasksToBeRendered = completedList;
+    }else {
+        tasksToBeRendered = todoList;
+    };
+
+    const filterTasks = (e) => {
+        setFilteredValue(e.target.value);
+    }
     const styles = {
         box : {
             bgcolor: 'white', 
@@ -79,7 +103,7 @@ function TodoPage() {
             justifyContent: 'center',
         },
         button : {
-            fontSize: '0.7rem',
+            fontSize: '0.7rem', 
             backgroundColor: '#c5cae9',
             color: '#283593',
             border: 'solid 1px #283593',
@@ -92,12 +116,14 @@ function TodoPage() {
         textFieldGrid : {
             width: '90%',
             display: 'flex',
-            alignItems: 'stretch',
-            marginY: '20px'
+            marginY: '20px',
+            background: colors.indigo[50],
+            borderRadius: '5px'
         },
         textFieldBtn: {
-            width: '140px',
+            width: '120px',
             height: '100%',
+            borderRadius: '5px',
             fontSize: '0.9rem',
             backgroundColor: '#7986cb',
             color: 'white',
@@ -127,13 +153,19 @@ function TodoPage() {
                         }}>
                             Tasks
                 </Typography>
-                <Box sx={styles.buttonGroup}>
-                    <Button sx={styles.button} variant='text'>All</Button>
-                    <Button sx={styles.button} variant='text'>In progress</Button>
-                    <Button sx={styles.button} variant='text'>Completed</Button>
-                </Box>
+                {/* FILTERING BUTTONS */}
+                <ToggleButtonGroup
+                    sx={styles.buttonGroup}
+                    value={filteredValue}
+                    exclusive
+                    onChange={filterTasks}
+                >
+                    <ToggleButton sx={styles.button} variant='text' value='all'>All</ToggleButton>
+                    <ToggleButton sx={styles.button} variant='text' value='inProgress'>In progress</ToggleButton>
+                    <ToggleButton sx={styles.button} variant='text' value='completed'>Completed</ToggleButton>
+                </ToggleButtonGroup>
                 <Box sx={{width: '90%',  overflowY: 'auto'}}>
-                {todoList.map((task) => (
+                {tasksToBeRendered.map((task) => (
                     <TaskPage 
                         key={task.id} 
                         task={task} 
@@ -145,7 +177,7 @@ function TodoPage() {
                 ))}
                 </Box>
                 <Grid container spacing={0} sx={styles.textFieldGrid}>
-                    <Grid item xs={8} sx={{ marginRight:'-20px'}}> 
+                    <Grid item size={8}> 
                        <TextField 
                             label="Add New Task" 
                             variant="outlined" 
@@ -155,7 +187,7 @@ function TodoPage() {
                             onChange={(e) => setTitleInput(e.target.value)}
                             />
                     </Grid>
-                    <Grid item xs={4} >
+                    <Grid item size={4}>
                         <Button sx={styles.textFieldBtn} variant='text' onClick={() => handleInputClick()}>Add Task</Button>
                     </Grid>
                 </Grid>
