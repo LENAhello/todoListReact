@@ -61,6 +61,7 @@ function TaskPage({task, handleCheck, todoList, setTodoList}) {
             fontWeight: 500,
             color: task.isCompleted ? '#006241' : '#5c6bc0',
             letterSpacing: '0.5px',
+            textDecoration: task.isCompleted ? 'line-through': 'none',
         },
         deleteDialog : {
             background: colors.red[50],

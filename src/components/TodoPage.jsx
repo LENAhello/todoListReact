@@ -3,27 +3,10 @@ import { Box, Container, Typography, Button, TextField, Grid, colors, ToggleButt
 import { v4 as uuidv4 } from 'uuid';
 import TaskPage from './TaskPage';
 
-const todoListOne = [
-    {
-        id: uuidv4(),
-        title: 'doing my yyy',
-        isCompleted: false,
-    },
-    {
-        id: uuidv4(),
-        title: 'doing my homework',
-        isCompleted: false,
-    },
-    {
-        id: uuidv4(),
-        title: 'doing my oo',
-        isCompleted: false,
-    },
-];
 
 function TodoPage() {
 
-    const [todoList, setTodoList] = useState(todoListOne);
+    const [todoList, setTodoList] = useState([]);
     const [titleInput, setTitleInput] = useState('');
     const [filteredValue, setFilteredValue] = useState('all');
 
@@ -164,6 +147,7 @@ function TodoPage() {
                     <ToggleButton sx={styles.button} variant='text' value='inProgress'>In progress</ToggleButton>
                     <ToggleButton sx={styles.button} variant='text' value='completed'>Completed</ToggleButton>
                 </ToggleButtonGroup>
+                {/* IMPORT TASKPAGE COMPONENT TO DISPLAY TASKS */}
                 <Box sx={{width: '90%',  overflowY: 'auto'}}>
                 {tasksToBeRendered.map((task) => (
                     <TaskPage 
@@ -176,6 +160,7 @@ function TodoPage() {
         
                 ))}
                 </Box>
+                {/* TEXT FIELD FOR ADDING NEW TASKS */}
                 <Grid container spacing={0} sx={styles.textFieldGrid}>
                     <Grid item size={8}> 
                        <TextField 
@@ -188,7 +173,12 @@ function TodoPage() {
                             />
                     </Grid>
                     <Grid item size={4}>
-                        <Button sx={styles.textFieldBtn} variant='text' onClick={() => handleInputClick()}>Add Task</Button>
+                        <Button 
+                            sx={styles.textFieldBtn} 
+                            variant='text' 
+                            onClick={() => handleInputClick()}
+                            disabled={titleInput.length == 0}    
+                        >Add Task</Button>
                     </Grid>
                 </Grid>
             </Box>
